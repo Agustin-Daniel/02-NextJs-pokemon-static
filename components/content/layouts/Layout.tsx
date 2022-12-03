@@ -1,6 +1,6 @@
 import Head from "next/head"
 import { FC, PropsWithChildren } from "react";
-import { Navbar } from './ui';
+import { Navbar } from '../ui';
 
 
 interface Props {

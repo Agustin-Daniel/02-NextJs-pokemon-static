@@ -1,6 +1,5 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from "next";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Layout } from "../../components/content/layouts";
 import pokeApi from "../../api/PokeApi";
 import { Pokemon } from "../../interfaces";
@@ -8,12 +7,13 @@ import { Button, Card, Container, Grid, Text } from "@nextui-org/react";
 import Image from "next/image";
 import { localFavorites } from "../../utils";
 import confetti from 'canvas-confetti'
+import { PokemonListResponse } from '../../interfaces/pokemon-list';
 
 interface Props {
 	pokemon: Pokemon;
 }
 
-const PokemonPage: NextPage<Props> = ({ pokemon }) => {
+const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
 
 
 	const [isInFavorites, setIsInFavorites] = useState( localFavorites.existInFavorites( pokemon.id ) )
@@ -112,31 +112,26 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-	const pokemons151 = [...Array(50)].map((value, index) => `${index + 1}`);
+
+	const { data } = await pokeApi.get<PokemonListResponse>('/pokemon?limit=50', {
+		headers: {
+			'accept-encoding': '*'
+		}
+	});
+	const pokemonNames: string[] = data.results.map( pokemon => pokemon.name )
 
 	return {
-		paths: pokemons151.map((id) => ({
-			params: { id },
+		paths: pokemonNames.map((name) => ({
+			params: { name },
 		})),
-		// paths: [
-		// 	{
-		// 		params: { id: '1' }
-		// 	},
-		// 	{
-		// 		params: { id: '1' }
-		// 	},
-		// 	{
-		// 		params: { id: '1' }
-		// 	}
-		// ],
 		fallback: false,
 	};
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-	const { id } = params as { id: string };
+	const { name } = params as { name: string };
 
-	const { data } = await pokeApi.get<Pokemon>(`/pokemon/${id}`, {
+	const { data } = await pokeApi.get<Pokemon>(`/pokemon/${name}`, {
 		headers: {
 			"accept-encoding": "*",
 		},
@@ -155,4 +150,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	};
 };
 
-export default PokemonPage;
+export default PokemonByNamePage;

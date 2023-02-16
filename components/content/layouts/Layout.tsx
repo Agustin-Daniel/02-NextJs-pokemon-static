@@ -23,13 +23,13 @@ export const Layout: FC<PropsWithChildren & Props> = ({ children, title }) => {
 				<Head>
 					<title>{ title || "Pokemon App"}</title>
 
-					<meta property="og:title" content={`Informacion sobre ${title}`} />
+					{/* <meta property="og:title" content={`Informacion sobre ${title}`} />
 					<meta property="og:description" content={`Esta es la pagina sobre ${title}`} />
-					<meta property="og:image" content={`${origin}/img/banner.png`} />
+					<meta property="og:image" content={`${origin}/img/banner.png`} /> */}
 
-					<meta name="author" content="Agustin Messina" />
-					<meta name="description" content={`Informacion sobre el pokemon ${title}`} />
-					<meta name="keywords" content={`${title}, pokemon, pokedex`} />
+					<meta name="author" content="AgentFont" />
+					{/* <meta name="description" content={`Informacion sobre el pokemon ${title}`} />
+					<meta name="keywords" content={`${title}, pokemon, pokedex`} /> */}
 				</Head>
 
 				<Navbar />
